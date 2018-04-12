@@ -1,2 +1,12 @@
 *pyc
 train_dir.txt
+data/samples_out/
+
+# ignore training dataset
+data/lidar_2d/
+data/lidar_2d.tgz
+
+# CLion
+.idea/
+cmake-build-debug/
+
