@@ -5,11 +5,8 @@ By Bichen Wu, Alvin Wan, Xiangyu Yue, Kurt Keutzer (UC Berkeley)
 This repository contains a tensorflow implementation of SqueezeSeg, a convolutional neural network model for LiDAR segmentation. A demonstration of SqueezeSeg can be found below:
 
 <p align="center">
-
 <img src="./readme/pr_0005.gif" width="600" />
-
 </p>
-
 
 Please refer to our video for a high level introduction of this work: https://youtu.be/Xyn5Zd3lm6s. For more details, please refer to our paper: https://arxiv.org/abs/1710.07368. If you find this work useful for your research, please consider citing:
 
@@ -28,18 +25,17 @@ Please refer to our video for a high level introduction of this work: https://yo
 ## Installation:
 
 The instructions are tested on Ubuntu 16.04 with python 2.7 and tensorflow 1.0 with GPU support. 
--   Clone the SqueezeSeg repository:
+- Clone the SqueezeSeg repository:
     ```Shell
     $ git clone https://github.com/BichenWuUCB/SqueezeSeg.git
     ```
-      We name the root directory as `$SQSG_ROOT`.
+     We name the root directory as `$SQSG_ROOT`.
 
--   Setup virtual environment:
+- Setup virtual environment:
     1. By default we use Python2.7. Create the virtual environment
        ```Shell
        $ virtualenv env
        ```
-
     2. Activate the virtual environment
        ```Shell
        $ source env/bin/activate
@@ -58,9 +54,12 @@ The instructions are tested on Ubuntu 16.04 with python 2.7 and tensorflow 1.0 w
        # directory to store all virtual environment 
        export WORKON_HOME=$HOME/.local/virtualenvs
        if [ -e $HOME/.local/bin/virtualenvwrapper.sh ]; then
-         source $HOME/.local/bin/virtualenvwrapper.sh                                                        else if [ -e /usr/local/bin/virtualenvwrapper.sh ]; then
-         source /usr/local/bin/virtualenvwrapper.sh                                                          fi
-       export PIP_VIRTUALENV_BASE=$WORKON_HOME                                                              export PIP_RESPECT_VIRTUALENV=true
+         source $HOME/.local/bin/virtualenvwrapper.sh
+       else if [ -e /usr/local/bin/virtualenvwrapper.sh ]; then
+         source /usr/local/bin/virtualenvwrapper.sh
+       fi
+       export PIP_VIRTUALENV_BASE=$WORKON_HOME
+       export PIP_RESPECT_VIRTUALENV=true
        # enable virtualenvwrapper
        $ source ~/.bashrc
        # create virtual environment with python2.7 and tensorflow 1.0.0
@@ -70,8 +69,8 @@ The instructions are tested on Ubuntu 16.04 with python 2.7 and tensorflow 1.0 w
 -   Use pip to install required Python packages:
 
     ```Shell
-    $ workon python1.0.0
-    (python1.0.0) $ pip install -r requirements.txt
+      $ workon python1.0.0
+      (python1.0.0) $ pip install -r requirements.txt
     ```
 
 ## Demo:
@@ -110,41 +109,39 @@ The instructions are tested on Ubuntu 16.04 with python 2.7 and tensorflow 1.0 w
   $ workon python1.0.0
   (python1.0.0) $ ./scripts/eval.sh -gpu 1 -image_set val -log_dir ./log/
   ```
-
+  
 - We can monitor the training process using tensorboard.
   ```Shell
   (python1.0.0) $ tensorboard --logdir=$SQSG_ROOT/log/
   ```
     Tensorboard displays information such as training loss, evaluation accuracy, visualization of detection results in the training process, which are helpful for debugging and tunning models, as shown below:
 
-  <center><img src="./readme/tb_eval.png" width="600" alt=""/></center>
-  <center><img src="./readme/tb_train.png" width="600" alt=""/></center>
-
-
-
+  <p align="center">
+    <img src="./readme/tb_eval.png" width="600" alt=""/>
+  </p>
+  <p align="center">
+    <img src="./readme/tb_train.png" width="600" alt=""/>
+  </p>
 
 ## ROS
+- [x] Training dataset visualization
++ quick start
+    ```shell
+    $ ./scripts/quickstart.sh 
+    Usage: ./scripts/quickstart.sh [options]
+    
+    options:
+    -h, --help                show brief help
+    -rviz_cfg                 rviz configure file.
+    $ ./scripts/npy_player.sh  -data_dir ./data/lidar_2d
+    ```
++ safely quit
+    ```shell
+    $ ./scripts/killall.sh
+    ```
+<p align="center">
+    <img src="./readme/npy_player.png" width="600" alt=""/>
+</p>
 
-+ Training dataset visualization
-
-  <center><img src="./readme/npy_player.png" width="600" alt=""/></center>
-
-  1. quick start
-
-     ```shell
-     $ ./scripts/quickstart.sh 
-     Usage: ./scripts/quickstart.sh [options]
-
-     options:
-     -h, --help                show brief help
-     -rviz_cfg                 rviz configure file.
-     $ ./scripts/npy_player.sh  -data_dir ./data/lidar_2d
-     ```
-
-  2. safely quit
-
-     ```shell
-     $ ./scripts/killall.sh
-     ```
-
-     ​
+- [ ] Online point cloud segmentation  
++ 
