@@ -1,6 +1,7 @@
 *pyc
 train_dir.txt
 data/samples_out/
+log/
 
 # ignore training dataset
 data/lidar_2d/
