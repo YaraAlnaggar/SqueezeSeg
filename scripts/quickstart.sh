@@ -10,15 +10,7 @@ get_char() {
   stty $SAVEDSTTY
 }
 
-if [ $# -eq 0 ]
-then
-  echo "Usage: ./scripts/quickstart.sh [options]"
-  echo " "
-  echo "options:"
-  echo "-h, --help                show brief help"
-  echo "-rviz_cfg                 rviz configure file."
-  exit 0
-fi
+export RVIZ_CFG="./rviz/default.rviz"
 
 while test $# -gt 0; do
   case "$1" in
@@ -27,7 +19,7 @@ while test $# -gt 0; do
       echo " "
       echo "options:"
       echo "-h, --help                show brief help"
-      echo "-rviz_cfg                 rviz configure file."
+      echo "-rviz_cfg                 rviz configure file, default './rviz/default.rviz'."
       exit 0
       ;;
     -rviz_cfg)
@@ -36,7 +28,12 @@ while test $# -gt 0; do
       shift
       ;;
     *)
-      break
+      echo "Usage: ./scripts/quickstart.sh [options]"
+      echo " "
+      echo "options:"
+      echo "-h, --help                show brief help"
+      echo "-rviz_cfg                 rviz configure file, default './rviz/default.rviz'."
+      exit 0
       ;;
   esac
 done
