@@ -2,7 +2,7 @@
 
 if [ $# -eq 0 ]
 then
-  echo "Usage: ./scripts/npy_player.sh [options]"
+  echo "Usage: ./scripts/npy_player.sh -data_dir arg1 [options]"
   echo " "
   echo "options:"
   echo "-h, --help                show brief help,"
@@ -13,7 +13,7 @@ fi
 while test $# -gt 0; do
   case "$1" in
     -h|--help)
-      echo "Usage: ./scripts/npy_player.sh [options]"
+      echo "Usage: ./scripts/npy_player.sh -data_dir arg1 [options]"
       echo " "
       echo "options:"
       echo "-h, --help                show brief help,"
@@ -26,13 +26,18 @@ while test $# -gt 0; do
       shift
       ;;
     *)
-      break
+      echo "Usage: ./scripts/npy_player.sh -data_dir arg1 [options]"
+      echo " "
+      echo "options:"
+      echo "-h, --help                show brief help,"
+      echo "-data_dir                 Where is the *.npy training set."
+      exit 0
       ;;
   esac
 done
 
 #bash ./scripts/killall.sh
-bash ./scripts/quickstart.sh -rviz_cfg ./rviz/default.rviz
+bash ./scripts/quickstart.sh -rviz_cfg ./rviz/npy.rviz
 
-python ./src/ros/npy_node.py \
+python ./src/nodes/npy_node.py \
   --dataset_path=$DATA_DIR

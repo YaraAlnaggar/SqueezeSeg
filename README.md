@@ -143,5 +143,21 @@ The instructions are tested on Ubuntu 16.04 with python 2.7 and tensorflow 1.0 w
     <img src="./readme/npy_player.png" width="600" alt=""/>
 </p>
 
-- [ ] Online point cloud segmentation  
-+ 
+- [ ] Online point cloud segmentation
+```bash
+$ ./scripts/killall.sh
+
+$ ./scripts/online.sh -h
+Usage: ./scripts/online.sh [options]
+ 
+options:
+-h, --help                show brief help
+-sub_topic                subscribe point cloud topic, default '/kitti/points_raw'.
+# start online segmentation node
+$ ./scripts/online.sh
+# start any node you have to publish point cloud in "sub_topic"
+```
+
+<p align="center">
+    <img src="./readme/online_segmentation.png" width="800" alt=""/>
+</p>
