@@ -5,7 +5,7 @@ By Bichen Wu, Alvin Wan, Xiangyu Yue, Kurt Keutzer (UC Berkeley)
 This repository contains a tensorflow implementation of SqueezeSeg, a convolutional neural network model for LiDAR segmentation. A demonstration of SqueezeSeg can be found below:
 
 <p align="center">
-<img src="./readme/pr_0005.gif" width="600" />
+<img src=".readme/pr_0005.gif" width="600" />
 </p>
 
 Please refer to our video for a high level introduction of this work: https://youtu.be/Xyn5Zd3lm6s. For more details, please refer to our paper: https://arxiv.org/abs/1710.07368. If you find this work useful for your research, please consider citing:
@@ -82,7 +82,7 @@ The instructions are tested on Ubuntu 16.04 with python 2.7 and tensorflow 1.0 w
   ```
   If the installation is correct, the detector should write the detection results as well as 2D label maps to `$SQSG_ROOT/data/samples_out`. Here are examples of the output label map overlaped with the projected LiDAR signal. Green masks indicate clusters corresponding to cars and blue masks indicate cyclists.
   <p align="center">
-    <img src="./readme/0001.gif" width="600" />
+    <img src=".readme/0001.gif" width="600" />
   </p>
 
 
@@ -117,10 +117,10 @@ The instructions are tested on Ubuntu 16.04 with python 2.7 and tensorflow 1.0 w
     Tensorboard displays information such as training loss, evaluation accuracy, visualization of detection results in the training process, which are helpful for debugging and tunning models, as shown below:
 
   <p align="center">
-    <img src="./readme/tb_eval.png" width="600" alt=""/>
+    <img src=".readme/tb_eval.png" width="600" alt=""/>
   </p>
   <p align="center">
-    <img src="./readme/tb_train.png" width="600" alt=""/>
+    <img src=".readme/tb_train.png" width="600" alt=""/>
   </p>
 
 ## ROS
@@ -140,7 +140,7 @@ The instructions are tested on Ubuntu 16.04 with python 2.7 and tensorflow 1.0 w
     $ ./scripts/killall.sh
     ```
 <p align="center">
-    <img src="./readme/npy_player.png" width="600" alt=""/>
+    <img src=".readme/npy_player.png" width="600" alt=""/>
 </p>
 
 - [ ] Online point cloud segmentation
@@ -159,5 +159,5 @@ $ ./scripts/online.sh
 ```
 
 <p align="center">
-    <img src="./readme/online_segmentation.png" width="800" alt=""/>
+    <img src=".readme/online_segmentation.png" width="800" alt=""/>
 </p>
