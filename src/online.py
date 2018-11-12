@@ -14,6 +14,9 @@ from nodes.segment_node import SegmentNode
 FLAGS = tf.app.flags.FLAGS
 
 tf.app.flags.DEFINE_string(
+	  'sub_topic', '/kitti/points_raw',
+	  """subcribed pointcloud topic.""")
+tf.app.flags.DEFINE_string(
     'checkpoint', './data/SqueezeSeg/model.ckpt-23000',
     """Path to the model parameter file.""")
 tf.app.flags.DEFINE_string(
