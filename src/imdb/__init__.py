@@ -1,1 +1,1 @@
-from kitti import kitti
+from .kitti import kitti

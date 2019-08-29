@@ -1,4 +1,5 @@
 *pyc
+*npy
 train_dir.txt
 data/samples_out/
 log/
@@ -10,4 +11,7 @@ data/lidar_2d.tgz
 # CLion
 .idea/
 cmake-build-debug/
+
+# bags
+*bag
 

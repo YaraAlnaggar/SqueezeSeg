@@ -6,7 +6,7 @@ import os
 import numpy as np
 import subprocess
 
-from imdb import imdb
+from .imdb import imdb
 
 class kitti(imdb):
   def __init__(self, image_set, data_path, mc):

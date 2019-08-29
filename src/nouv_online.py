@@ -9,7 +9,7 @@ import argparse
 import tensorflow as tf
 import rospy
 
-from nodes.segment_node import SegmentNode
+from nodes.noveau import SegmentNode
 
 FLAGS = tf.app.flags.FLAGS
 

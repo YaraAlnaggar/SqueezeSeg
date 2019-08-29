@@ -1,0 +1,7 @@
+1- enable env environment
+' source env/bin/activate'
+' source /opt/ros/kinetic/setup.bash'
+2- using python3
+3- run python3 src/nouv_online.py
+4- nouv_online.py calls nouveau.py, so any edits in projection code and network inference are done in nouveau.py
+

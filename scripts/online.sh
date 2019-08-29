@@ -25,4 +25,4 @@ done
 
 bash ./scripts/quickstart.sh
 
-python ./src/online.py --sub_topic "$SUB_TOPIC"
+python3 ./src/online.py --sub_topic "$SUB_TOPIC"

@@ -188,7 +188,7 @@ class SegmentNode():
             }
         )
         label = pred_cls[0]
-
+        print(label)
         # # generated depth map from LiDAR data
         depth_map = Image.fromarray(
             (255 * _normalize(lidar[:, :, 3])).astype(np.uint8))
@@ -240,13 +240,33 @@ class SegmentNode():
 
         # point cloud segments
         # 4 PointFields as channel description
-        msg_segment = pc2.create_cloud(header=header,
-                                       fields=_make_point_field(cloud.shape[0]),
-                                       points=cloud.T)
+        # msg_segment = pc2.create_cloud(header=header,
+        #                                fields=_make_point_field(cloud.shape[0]),
+        #                                points=cloud.T)
 
-        self._feature_map_pub.publish(msg_feature)
-        self._label_map_pub.publish(msg_label)
-        self._pub.publish(msg_segment)
+        # self._feature_map_pub.publish(msg_feature)
+        # self._label_map_pub.publish(msg_label)
+        # self._pub.publish(msg_segment)
+
+
+        # save the data
+        file_name = "test"
+
+        # generated depth map from LiDAR data
+        depth_map = Image.fromarray(
+            (255 * _normalize(lidar[:, :, 3])).astype(np.uint8))
+        # classified depth map with label
+        label_map = Image.fromarray(
+            (255 * visualize_seg(pred_cls, self._mc)[0]).astype(np.uint8))
+        # blending image: out = image1 * (1.0 - alpha) + image2 * alpha
+        blend_map = Image.blend(
+            depth_map.convert('RGBA'),
+            label_map.convert('RGBA'),
+            alpha=0.4
+        )
+        # save classified depth map image with label
+        blend_map.save( file_name + '.png')
+
         rospy.loginfo("Point cloud processed. Took %.6f ms.", clock.takeRealTime())
 
     def hv_in_range(self, x, y, z, fov, fov_type='h'):
