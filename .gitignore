@@ -8,6 +8,7 @@ log/
 data/lidar_2d/
 data/lidar_2d.tgz
 data/*
+data/
 
 # CLion
 .idea/
@@ -18,3 +19,4 @@ cmake-build-debug/
 
 # virtual environment
 env/
+env/lib
