@@ -1,1 +1,0 @@
-download the dataset [lidar_2d.tgz](https://www.dropbox.com/s/pnzgcitvppmwfuf/lidar_2d.tgz), and extract `*.npy` here.

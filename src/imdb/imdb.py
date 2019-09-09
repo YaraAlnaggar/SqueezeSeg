@@ -46,7 +46,7 @@ class imdb(object):
                           np.random.permutation(np.arange(len(self._image_idx)))]
         self._cur_idx = 0
 
-    def read_batch(self, shuffle=True):
+    def read_batch(self, dataset, shuffle=True):
         """Read a batch of lidar data including labels. Data formated as numpy array
         of shape: height x width x {x, y, z, intensity, range, label}.
         Args:
@@ -92,16 +92,28 @@ class imdb(object):
                         record = record[:, ::-1, :]
                         record[:, :, 1] *= -1
 
-            lidar = record[:, :, :5]  # x, y, z, intensity, depth
-            print(lidar)
-            lidar_mask = np.reshape(
-                (lidar[:, :, 4] > 0),
-                [mc.ZENITH_LEVEL, mc.AZIMUTH_LEVEL, 1]
-            )
-            # normalize
-            lidar = (lidar - mc.INPUT_MEAN) / mc.INPUT_STD
+            if dataset == "NH_airsim":
+                lidar = record[:, :, :4]  # x, y, z, r
+                print(lidar)
+                lidar_mask = np.reshape(
+                    (lidar[:, :, 3] > 0),
+                    [mc.ZENITH_LEVEL, mc.AZIMUTH_LEVEL, 1]
+                )
+                # normalize
+                lidar = (lidar - mc.INPUT_MEAN) / mc.INPUT_STD
+                label = record[:, :, 4]
 
-            label = record[:, :, 5]
+            else:
+                lidar = record[:, :, :5]  # x, y, z, intensity, depth
+                print(lidar)
+                lidar_mask = np.reshape(
+                    (lidar[:, :, 4] > 0),
+                    [mc.ZENITH_LEVEL, mc.AZIMUTH_LEVEL, 1]
+                )
+                # normalize
+                lidar = (lidar - mc.INPUT_MEAN) / mc.INPUT_STD
+                label = record[:, :, 5]
+
             print(label)
             weight = np.zeros(label.shape)
             for l in range(mc.NUM_CLASS):

@@ -27,18 +27,18 @@ def _normalize(x):
     return (x - x.min()) / (x.max() - x.min())
 
 pick_color = {
-    0: (163, 162, 158) ,     # dark grey road
-    1 :  (255,0,0),        # red
-    2 :  (29, 61, 0) ,      # dark green
+    7: (163, 162, 158) ,     # dark grey road
+    9 :  (255,0,0),        # red
+    5 :  (29, 61, 0) ,      # dark green
     3:  (64, 148, 4),      # green
     4:  (165, 115, 14),    # brown
-    5  : (255, 191, 64),    # light brown
-    6 : (107, 46, 5),      # cement 
-    7 : (214, 165, 133),   # wall 
+    2  : (255, 191, 64),    # light brown
+    1 : (107, 46, 5),      # cement 
+    6 : (214, 165, 133),   # wall 
     8 : (222, 174, 90),     # light brown
-    9 : (215, 88, 232),    # pink,
+    11 : (215, 88, 232),    # pink,
     10 : (89, 5, 5),  #  dark red
-    11: (0,0,0)
+    0: (0,0,0)
 }    
 
 
@@ -64,7 +64,7 @@ class SegmentNode():
     def run(self):
 
 
-        np_p = np.load("/home/ubi-comp/yara/AirSim/PythonClient/multirotor/scene1_90fov_color.npy")
+        np_p = np.load("/home/ubi-comp/yara/AirSim/PythonClient/lidar_collecting/utils/hello_no_0.npy")
         # perform fov filter by using hv_in_range
 
         np_p[:,2] = np_p[:,2] + 3
@@ -117,7 +117,7 @@ class SegmentNode():
 
 
         # save the data
-        file_name = "hello_fov90"
+        file_name = "hello_no_0"
         # generated depth map from LiDAR data
         depth_map = Image.fromarray(
             (255 * _normalize(lidar[:, :, 3])).astype(np.uint8))
@@ -144,7 +144,7 @@ class SegmentNode():
 
         img = Image.new('RGB',(512,64))
         img.putdata(colors)
-        img.save('somefile.png')
+        img.save('hello_somefile.png')
 
     def hv_in_range(self, x, y, z, fov, fov_type='h'):
         """
@@ -190,14 +190,15 @@ class SegmentNode():
         :return: `depth_map`: the projected depth map of shape[H,W,C]
         """
 
-        x, y, z, i = velo_points[:, 0], velo_points[:, 1], velo_points[:, 2], velo_points[:, 3]
+        x, y, z, label = velo_points[:, 0], velo_points[:, 1], velo_points[:, 2], velo_points[:, 3]
         #print("z", 255 * _normalize(z))
         d = np.sqrt(x ** 2 + y ** 2 + z**2)
         r = np.sqrt(x ** 2 + y ** 2)
         d[d==0] = 0.000001
         r[r==0] = 0.000001
-        # phi = np.radians(45.) - np.arcsin(y/r)
-        phi = np.arcsin(y/r) + np.radians(45.) 
+        phi = np.radians(45.) - np.arcsin(y/r)
+
+        # phi = np.arcsin(y/r) + np.radians(45.) 
         phi_ = (phi/dphi).astype(int)
         phi_[phi_<0] = 0
         phi_[phi_>=512] = 511
@@ -214,6 +215,7 @@ class SegmentNode():
         theta_ = (theta/dtheta).astype(int)
         # print theta_
         theta_[theta_<0] = 0
+        theta_ = H - theta_
         theta_[theta_>=H] = H-1
         #print theta,phi,theta_.shape,phi_.shape
         # print(np.min((phi/dphi)),np.max((phi/dphi)))
@@ -228,8 +230,8 @@ class SegmentNode():
             depth_map[theta_, phi_, 0] = x
             depth_map[theta_, phi_, 1] = y
             depth_map[theta_, phi_, 2] = z
-            depth_map[theta_, phi_, 3] = i
+            depth_map[theta_, phi_, 3] = label
             depth_map[theta_, phi_, 4] = d
         else:
-            depth_map[theta_, phi_, 0] = i
+            depth_map[theta_, phi_, 0] = label
         return depth_map

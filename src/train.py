@@ -18,14 +18,14 @@ import tensorflow as tf
 import threading
 
 from config import *
-from imdb import kitti
+from imdb import kitti, NH_airsim
 from utils.util import *
 from nets import *
 
 FLAGS = tf.app.flags.FLAGS
 
 tf.app.flags.DEFINE_string('dataset', 'KITTI',
-                           """Currently only support KITTI dataset.""")
+                           """Currently only support KITTI dataset and NH_airsim.""")
 tf.app.flags.DEFINE_string('data_path', '', """Root directory of data""")
 tf.app.flags.DEFINE_string('image_set', 'train',
                            """ Can be train, trainval, val, or test""")
@@ -47,8 +47,8 @@ tf.app.flags.DEFINE_string('gpu', '0', """gpu id.""")
 
 def train():
     """Train SqueezeSeg model"""
-    assert FLAGS.dataset == 'KITTI', \
-        'Currently only support KITTI dataset'
+    # assert FLAGS.dataset == 'KITTI', \
+    #     'Currently only support KITTI dataset'
 
     os.environ['CUDA_VISIBLE_DEVICES'] = FLAGS.gpu
 
@@ -57,12 +57,22 @@ def train():
         assert FLAGS.net == 'squeezeSeg', \
             'Selected neural net architecture not supported: {}'.format(FLAGS.net)
 
-        if FLAGS.net == 'squeezeSeg':
+        if  FLAGS.dataset == 'KITTI':
             mc = kitti_squeezeSeg_config()
             mc.PRETRAINED_MODEL_PATH = FLAGS.pretrained_model_path
             model = SqueezeSeg(mc)
-        # *.npy image dataset in random order
-        imdb = kitti(FLAGS.image_set, FLAGS.data_path, mc)
+            # *.npy image dataset in random order
+            imdb = kitti(FLAGS.image_set, FLAGS.data_path, mc)
+
+        elif  FLAGS.dataset == 'NH_airsim':
+            mc = NH_airsim_squeezeSeg_config()
+            mc.PRETRAINED_MODEL_PATH = FLAGS.pretrained_model_path
+            model = SqueezeSeg(mc)
+            # *.npy image dataset in random order
+            imdb = NH_airsim(FLAGS.image_set, FLAGS.data_path, mc)
+
+        
+
 
         # save model size, flops, activations by layers
         with open(os.path.join(FLAGS.train_dir, 'model_metrics.txt'), 'w') as f:
@@ -95,7 +105,7 @@ def train():
                 while not coord.should_stop():
                     # read batch input
                     lidar_per_batch, lidar_mask_per_batch, label_per_batch, \
-                    weight_per_batch = imdb.read_batch()
+                    weight_per_batch = imdb.read_batch(FLAGS.dataset)
 
                     feed_dict = {
                         model.ph_keep_prob: mc.KEEP_PROB,

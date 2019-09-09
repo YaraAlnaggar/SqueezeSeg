@@ -7,15 +7,14 @@ import os.path as osp
 import numpy as np
 from easydict import EasyDict as edict
 
-def base_model_config(dataset='KITTI'):
-  assert dataset.upper()=='KITTI', \
-      'Currently only support KITTI dataset'
+def base_model_config(dataset='NH_airsim'):
+  # assert dataset.upper()=='KITTI', \
 
   cfg = edict()
 
   # Dataset used to train/val/test model. Now support KITTI
   cfg.DATASET = dataset.upper()
-
+  
   # classes
   cfg.CLASSES = [
       'unknown',

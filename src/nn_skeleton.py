@@ -65,7 +65,7 @@ class ModelSkeleton:
     self.ph_keep_prob = tf.placeholder(tf.float32, name='keep_prob')
     # projected lidar points on a 2D spherical surface
     self.ph_lidar_input = tf.placeholder(
-        tf.float32, [mc.BATCH_SIZE, mc.ZENITH_LEVEL, mc.AZIMUTH_LEVEL, 5],
+        tf.float32, [mc.BATCH_SIZE, mc.ZENITH_LEVEL, mc.AZIMUTH_LEVEL, mc.INPUT_CHANNEL_SIZE],
         name='lidar_input'
     )
     # A tensor where an element is 1 if the corresponding cell contains an
@@ -87,7 +87,7 @@ class ModelSkeleton:
         capacity=mc.QUEUE_CAPACITY,
         dtypes=[tf.float32, tf.float32, tf.float32, tf.int32, tf.float32],
         shapes=[[],
-                [mc.BATCH_SIZE, mc.ZENITH_LEVEL, mc.AZIMUTH_LEVEL, 5],
+                [mc.BATCH_SIZE, mc.ZENITH_LEVEL, mc.AZIMUTH_LEVEL, mc.INPUT_CHANNEL_SIZE],
                 [mc.BATCH_SIZE, mc.ZENITH_LEVEL, mc.AZIMUTH_LEVEL, 1],
                 [mc.BATCH_SIZE, mc.ZENITH_LEVEL, mc.AZIMUTH_LEVEL],
                 [mc.BATCH_SIZE, mc.ZENITH_LEVEL, mc.AZIMUTH_LEVEL]]

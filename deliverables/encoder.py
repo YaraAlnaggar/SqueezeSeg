@@ -14,7 +14,7 @@ import tensorflow as tf
 
 
 class SqueezeSeg:
-  def __init__(self, gpu_id=0, BATCH_SIZE = 1, ZENITH_LEVEL = 64, AZIMUTH_LEVEL = 512, input_channel = 7):
+  def __init__(self, gpu_id=0, BATCH_SIZE = 1, ZENITH_LEVEL = 64, AZIMUTH_LEVEL = 512, input_channel = 5):
     with tf.device('/gpu:{}'.format(gpu_id)):
       
       self.lidar_input = tf.placeholder(
@@ -134,8 +134,8 @@ class SqueezeSeg:
 
 
 
-lidar_f = np.ones((64,512,7))
-model = SqueezeSeg()
+lidar_f = np.ones((64,512,5))
+model = SqueezeSeg(input_channel=5)
 
 session = tf.Session(config=tf.ConfigProto(allow_soft_placement=True))
 init_op = tf.global_variables_initializer()

@@ -7,6 +7,7 @@ log/
 # ignore training dataset
 data/lidar_2d/
 data/lidar_2d.tgz
+data/*
 
 # CLion
 .idea/
@@ -15,3 +16,5 @@ cmake-build-debug/
 # bags
 *bag
 
+# virtual environment
+env/
