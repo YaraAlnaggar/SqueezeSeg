@@ -1,3 +1,6 @@
+import numpy as np
+
+
 def _normalize(x):
     return (x - x.min()) / (x.max() - x.min())
 
