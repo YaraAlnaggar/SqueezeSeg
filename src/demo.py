@@ -80,6 +80,10 @@ def detect():
                     pred_cls[0]
                 )
 
+
+                
+
+
                 # generated depth map from LiDAR data
                 depth_map = Image.fromarray(
                     (255 * _normalize(lidar[:, :, 3])).astype(np.uint8))
@@ -95,7 +99,10 @@ def detect():
                 # save classified depth map image with label
                 blend_map.save(
                     os.path.join(FLAGS.out_dir, 'plot_' + file_name + '.png'))
-
+                #Yara save input depth map
+                test = depth_map.convert('RGBA')
+                test.save(
+                os.path.join(FLAGS.out_dir, 'input_' + file_name + '.png'))
 
 def main(argv=None):
     if not tf.gfile.Exists(FLAGS.out_dir):

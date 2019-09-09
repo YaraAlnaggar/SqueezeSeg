@@ -93,7 +93,7 @@ class imdb(object):
                         record[:, :, 1] *= -1
 
             lidar = record[:, :, :5]  # x, y, z, intensity, depth
-            print lidar
+            print(lidar)
             lidar_mask = np.reshape(
                 (lidar[:, :, 4] > 0),
                 [mc.ZENITH_LEVEL, mc.AZIMUTH_LEVEL, 1]
@@ -102,7 +102,7 @@ class imdb(object):
             lidar = (lidar - mc.INPUT_MEAN) / mc.INPUT_STD
 
             label = record[:, :, 5]
-            print label
+            print(label)
             weight = np.zeros(label.shape)
             for l in range(mc.NUM_CLASS):
                 weight[label == l] = mc.CLS_LOSS_WEIGHT[int(l)]

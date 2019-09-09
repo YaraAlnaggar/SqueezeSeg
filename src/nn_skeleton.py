@@ -485,7 +485,7 @@ class ModelSkeleton:
         center_w = (factor_w - 1) if (size_w % 2 == 1) else (factor_w - 0.5)
         og_w = np.reshape(np.arange(size_w), (size_h, -1))
         up_kernel = (1 - np.abs(og_w - center_w)/factor_w)
-        for c in xrange(channels):
+        for c in range(channels):
           kernel_init[:, :, c, c] = up_kernel
 
         bias_init = tf.constant_initializer(0.0)
