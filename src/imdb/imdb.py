@@ -46,7 +46,7 @@ class imdb(object):
                           np.random.permutation(np.arange(len(self._image_idx)))]
         self._cur_idx = 0
 
-    def read_batch(self, dataset, shuffle=True):
+    def read_batch(self, shuffle=True):
         """Read a batch of lidar data including labels. Data formated as numpy array
         of shape: height x width x {x, y, z, intensity, range, label}.
         Args:

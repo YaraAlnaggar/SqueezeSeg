@@ -20,10 +20,14 @@ from imdb import kitti
 from utils.util import *
 from nets import *
 
+from config.NH_airsim_squeezeSeg_config import NH_airsim_squeezeSeg_config
+from imdb.NH_airsim import NH_airsim
+
+
 FLAGS = tf.app.flags.FLAGS
 
 tf.app.flags.DEFINE_string('dataset', 'KITTI',
-                           """Currently support KITTI dataset.""")
+                           """Currently support KITTI and NH_airsim dataset.""")
 tf.app.flags.DEFINE_string('data_path', '', """Root directory of data""")
 tf.app.flags.DEFINE_string('image_set', 'val',
                            """Can be train, trainval, val, or test""")
@@ -155,8 +159,8 @@ def eval_once(
 
 def evaluate():
     """Evaluate."""
-    assert FLAGS.dataset == 'KITTI', \
-        'Currently only supports KITTI dataset'
+    # assert FLAGS.dataset == 'KITTI', \
+    #     'Currently only supports KITTI dataset'
 
     os.environ['CUDA_VISIBLE_DEVICES'] = FLAGS.gpu
 
@@ -165,13 +169,20 @@ def evaluate():
         assert FLAGS.net == 'squeezeSeg', \
             'Selected neural net architecture not supported: {}'.format(FLAGS.net)
 
-        if FLAGS.net == 'squeezeSeg':
+        if FLAGS.dataset == 'squeezeSeg':
             mc = kitti_squeezeSeg_config()
             mc.LOAD_PRETRAINED_MODEL = False
             mc.BATCH_SIZE = 1  # TODO(bichen): fix this hard-coded batch size.
             model = SqueezeSeg(mc)
+            imdb = kitti(FLAGS.image_set, FLAGS.data_path, mc)
 
-        imdb = kitti(FLAGS.image_set, FLAGS.data_path, mc)
+        elif FLAGS.dataset == 'NH_airsim':
+            mc = NH_airsim_squeezeSeg_config()
+            mc.LOAD_PRETRAINED_MODEL = False
+            mc.BATCH_SIZE = 1  # TODO(bichen): fix this hard-coded batch size.
+            model = SqueezeSeg(mc)
+            imdb = NH_airsim(FLAGS.image_set, FLAGS.data_path, mc)
+        
 
         eval_summary_ops = []
         eval_summary_phs = {}

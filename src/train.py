@@ -108,7 +108,7 @@ def train():
                 while not coord.should_stop():
                     # read batch input
                     lidar_per_batch, lidar_mask_per_batch, label_per_batch, \
-                    weight_per_batch = imdb.read_batch(FLAGS.dataset)
+                    weight_per_batch = imdb.read_batch()
 
                     feed_dict = {
                         model.ph_keep_prob: mc.KEEP_PROB,
