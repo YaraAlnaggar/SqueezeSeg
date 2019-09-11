@@ -17,8 +17,9 @@ from six.moves import xrange
 import tensorflow as tf
 import threading
 
-from config import *
-from imdb import kitti, NH_airsim
+from config.NH_airsim_squeezeSeg_config import NH_airsim_squeezeSeg_config
+from imdb import kitti
+from imdb.NH_airsim import NH_airsim
 from utils.util import *
 from nets import *
 
@@ -36,7 +37,7 @@ tf.app.flags.DEFINE_integer('max_steps', 1000000,
                             """Maximum number of batches to run.""")
 tf.app.flags.DEFINE_string('net', 'squeezeSeg',
                            """Neural net architecture. """)
-tf.app.flags.DEFINE_string('pretrained_model_path', '',
+tf.app.flags.DEFINE_string('pretrained_model_path', "",
                            """Path to the pretrained model.""")
 tf.app.flags.DEFINE_integer('summary_step', 50,
                             """Number of steps to save summary.""")
@@ -66,6 +67,8 @@ def train():
 
         elif  FLAGS.dataset == 'NH_airsim':
             mc = NH_airsim_squeezeSeg_config()
+            if FLAGS.pretrained_model_path=="":
+                mc.LOAD_PRETRAINED_MODEL= False
             mc.PRETRAINED_MODEL_PATH = FLAGS.pretrained_model_path
             model = SqueezeSeg(mc)
             # *.npy image dataset in random order
@@ -169,7 +172,7 @@ def train():
                     viz_summary_list = sess.run(
                         viz_op_list,
                         feed_dict={
-                            model.depth_image_to_show: lidar_per_batch[:6, :, :, [4]],
+                            model.depth_image_to_show: lidar_per_batch[:6, :, :, [0]], #last index resembles the x channel
                             model.label_to_show: label_image,
                             model.pred_image_to_show: pred_image,
                         }
@@ -212,7 +215,7 @@ def train():
                 if step % FLAGS.checkpoint_step == 0 or step == FLAGS.max_steps - 1:
                     checkpoint_path = os.path.join(FLAGS.train_dir, 'model.ckpt')
                     saver.save(sess, checkpoint_path, global_step=step)
-        except Exception, e:
+        except Exception as e:
             coord.request_stop(e)
         finally:
             coord.request_stop()

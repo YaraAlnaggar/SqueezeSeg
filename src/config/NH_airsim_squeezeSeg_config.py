@@ -13,7 +13,7 @@ def NH_airsim_squeezeSeg_config():
   mc.CLASSES            = ['ignore', 'building', 'sign', 'tree','car', 'road']
   mc.NUM_CLASS          = len(mc.CLASSES)
   mc.CLS_2_ID           = dict(zip(mc.CLASSES, range(len(mc.CLASSES))))
-  mc.CLS_LOSS_WEIGHT    = np.array([1/15.0, 1.0,  10.0, 10.0]) #check
+  mc.CLS_LOSS_WEIGHT    = np.array([1/15.0, 1.0,  10.0, 10.0, 10.0, 1/15.0 ]) #check
   mc.CLS_COLOR_MAP      = np.array([[ 0.00,  0.00,  0.00],
                                     [ 0.12,  0.56,  0.37],
                                     [ 0.66,  0.55,  0.71],
@@ -30,10 +30,10 @@ def NH_airsim_squeezeSeg_config():
   mc.LCN_HEIGHT         = 3
   mc.LCN_WIDTH          = 5
   mc.RCRF_ITER          = 3
-  mc.BILATERAL_THETA_A  = np.array([.9, .9, .6, .6])
-  mc.BILATERAL_THETA_R  = np.array([.015, .015, .01, .01])
+  mc.BILATERAL_THETA_A  = np.array([.9, .9, .6, .6, .6, .9])
+  mc.BILATERAL_THETA_R  = np.array([.015, .015, .01, .01, .01, .015])
   mc.BI_FILTER_COEF     = 0.1
-  mc.ANG_THETA_A        = np.array([.9, .9, .6, .6])
+  mc.ANG_THETA_A        = np.array([.9, .9, .6, .6, .6, .9])
   mc.ANG_FILTER_COEF    = 0.02
 # ???????
 

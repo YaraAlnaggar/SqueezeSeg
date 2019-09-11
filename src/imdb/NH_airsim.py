@@ -38,8 +38,6 @@ class NH_airsim(imdb):
     return image_idx
 
   def _lidar_2d_path_at(self,idx):
-        lidar_2d_path = os.path.join(self._lidar_2d_path, idx+'.npy')
-
-    assert os.path.exists(lidar_2d_path), \
-        'File does not exist: {}'.format(lidar_2d_path)
+    lidar_2d_path = os.path.join(self._lidar_2d_path, idx+'.npy')
+    assert os.path.exists(lidar_2d_path),'File does not exist: {}'.format(lidar_2d_path)
     return lidar_2d_path
