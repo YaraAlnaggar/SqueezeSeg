@@ -7,7 +7,9 @@ from __future__ import division
 from __future__ import print_function
 
 from datetime import datetime
-import os.path
+import os
+from os import listdir
+from os.path import isfile, join
 import sys
 import time
 import glob
@@ -22,8 +24,16 @@ from imdb import kitti
 from utils.util import *
 from nets import *
 
+from config.NH_airsim_squeezeSeg_config import NH_airsim_squeezeSeg_config
+from imdb.NH_airsim import NH_airsim
+
+
 FLAGS = tf.app.flags.FLAGS
 
+
+tf.app.flags.DEFINE_string(
+    'dataset', 'KITTI or NH_airsim',
+    """dataset name.""")
 tf.app.flags.DEFINE_string(
     'checkpoint', './data/SqueezeSeg/model.ckpt-23000',
     """Path to the model parameter file.""")
@@ -36,6 +46,8 @@ tf.app.flags.DEFINE_string(
 tf.app.flags.DEFINE_string('gpu', '0', """gpu id.""")
 
 
+
+
 def _normalize(x):
     return (x - x.min()) / (x.max() - x.min())
 
@@ -46,7 +58,11 @@ def detect():
     os.environ['CUDA_VISIBLE_DEVICES'] = FLAGS.gpu
 
     with tf.Graph().as_default():
-        mc = kitti_squeezeSeg_config()
+        if FLAGS.dataset == "KITTI":
+            mc = kitti_squeezeSeg_config()
+        elif FLAGS.dataset == "NH_airsim":
+            mc = NH_airsim_squeezeSeg_config()
+
         mc.LOAD_PRETRAINED_MODEL = False
         mc.BATCH_SIZE = 1  # TODO(bichen): fix this hard-coded batch size.
         model = SqueezeSeg(mc)
@@ -56,10 +72,11 @@ def detect():
             # load SqueezeSeg Model from checkpoint
             saver.restore(sess, FLAGS.checkpoint)
             # traverse all training data
-            for f in glob.iglob(FLAGS.input_path):
-                lidar = np.load(f).astype(np.float32, copy=False)[:, :, :5]
+            files = [join(FLAGS.input_path,f) for f in listdir(FLAGS.input_path) if isfile(join(FLAGS.input_path,f)) ]
+            for f in files:
+                lidar = np.load(f).astype(np.float32, copy=False)[:, :, :mc.INPUT_CHANNEL_SIZE]
                 lidar_mask = np.reshape(
-                    (lidar[:, :, 4] > 0),
+                    (lidar[:, :, 3] > 0), ##Hard coded for NH_airsim dataset
                     [mc.ZENITH_LEVEL, mc.AZIMUTH_LEVEL, 1]
                 )
                 lidar = (lidar - mc.INPUT_MEAN) / mc.INPUT_STD
@@ -81,35 +98,41 @@ def detect():
                 )
 
 
-                
+                if FLAGS.dataset == "KITTI":
+                    # generated depth map from LiDAR data
+                    depth_map = Image.fromarray(
+                        (255 * _normalize(lidar[:, :, 3])).astype(np.uint8))
+                    # classified depth map with label
+                    label_map = Image.fromarray(
+                        (255 * visualize_seg(pred_cls, mc)[0]).astype(np.uint8))
+                    # blending image: out = image1 * (1.0 - alpha) + image2 * alpha
+                    blend_map = Image.blend(
+                        depth_map.convert('RGBA'),
+                        label_map.convert('RGBA'),
+                        alpha=0.4
+                    )
+                    # save classified depth map image with label
+                    blend_map.save(
+                        os.path.join(FLAGS.out_dir, 'plot_' + file_name + '.png'))
 
+                elif FLAGS.dataset == "NH_airsim":
+                    # save classified depth map image with label
+                    depth_map = Image.fromarray(
+                        (255 * _normalize(lidar[:, :, 0])).astype(np.uint8))
+                    # classified depth map with label
+                    label_map = Image.fromarray(
+                        (255 * visualize_seg(pred_cls, mc)[0]).astype(np.uint8))
+                    depth_map.save(
+                        os.path.join(FLAGS.out_dir, 'input_' + file_name + '.png'))
+                    label_map.save(
+                        os.path.join(FLAGS.out_dir, 'pred_' + file_name + '.png'))
 
-                # generated depth map from LiDAR data
-                depth_map = Image.fromarray(
-                    (255 * _normalize(lidar[:, :, 3])).astype(np.uint8))
-                # classified depth map with label
-                label_map = Image.fromarray(
-                    (255 * visualize_seg(pred_cls, mc)[0]).astype(np.uint8))
-                # blending image: out = image1 * (1.0 - alpha) + image2 * alpha
-                blend_map = Image.blend(
-                    depth_map.convert('RGBA'),
-                    label_map.convert('RGBA'),
-                    alpha=0.4
-                )
-                # save classified depth map image with label
-                blend_map.save(
-                    os.path.join(FLAGS.out_dir, 'plot_' + file_name + '.png'))
-                #Yara save input depth map
-                test = depth_map.convert('RGBA')
-                test.save(
-                os.path.join(FLAGS.out_dir, 'input_' + file_name + '.png'))
 
 def main(argv=None):
     if not tf.gfile.Exists(FLAGS.out_dir):
         tf.gfile.MakeDirs(FLAGS.out_dir)
     detect()
     print('Detection output written to {}'.format(FLAGS.out_dir))
-
 
 if __name__ == '__main__':
     # run main = main or _sys.modules['__main__'].main
