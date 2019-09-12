@@ -44,7 +44,7 @@ tf.app.flags.DEFINE_integer('summary_step', 50,
 tf.app.flags.DEFINE_integer('checkpoint_step', 1000,
                             """Number of steps to save summary.""")
 tf.app.flags.DEFINE_string('gpu', '0', """gpu id.""")
-
+tf.app.flags.DEFINE_string('level', '5', """level of dataset""")
 
 def train():
     """Train SqueezeSeg model"""
@@ -72,7 +72,7 @@ def train():
             mc.PRETRAINED_MODEL_PATH = FLAGS.pretrained_model_path
             model = SqueezeSeg(mc)
             # *.npy image dataset in random order
-            imdb = NH_airsim(FLAGS.image_set, FLAGS.data_path, mc)
+            imdb = NH_airsim(FLAGS.image_set, FLAGS.data_path, mc, FLAGS.level)
 
         
 
