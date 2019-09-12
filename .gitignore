@@ -3,6 +3,7 @@
 train_dir.txt
 data/samples_out/
 log/
+Log_L0/
 
 # ignore training dataset
 data/lidar_2d/
