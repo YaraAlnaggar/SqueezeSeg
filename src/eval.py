@@ -31,6 +31,8 @@ tf.app.flags.DEFINE_string('dataset', 'KITTI',
 tf.app.flags.DEFINE_string('data_path', '', """Root directory of data""")
 tf.app.flags.DEFINE_string('image_set', 'val',
                            """Can be train, trainval, val, or test""")
+tf.app.flags.DEFINE_string('image_set_dir', 'train',
+                           """ directory of imageset text files""")
 tf.app.flags.DEFINE_string('eval_dir', '/tmp/bichen/logs/squeezeSeg/eval',
                            """Directory where to write event logs """)
 tf.app.flags.DEFINE_string('checkpoint_path', '/tmp/bichen/logs/squeezeSeg/train',
@@ -181,7 +183,7 @@ def evaluate():
             mc.LOAD_PRETRAINED_MODEL = False
             mc.BATCH_SIZE = 1  # TODO(bichen): fix this hard-coded batch size.
             model = SqueezeSeg(mc)
-            imdb = NH_airsim(FLAGS.image_set, FLAGS.data_path, mc)
+            imdb = NH_airsim(FLAGS.image_set_dir, FLAGS.image_set, FLAGS.data_path, mc, FLAGS.level)
         
 
         eval_summary_ops = []
