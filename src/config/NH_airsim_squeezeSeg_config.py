@@ -15,7 +15,11 @@ def NH_airsim_squeezeSeg_config():
   mc.NUM_CLASS          = len(mc.CLASSES)
   mc.CLS_2_ID           = dict(zip(mc.CLASSES, range(len(mc.CLASSES))))
   # mc.CLS_LOSS_WEIGHT    = np.array([1/15.0, 1.0,  10.0, 10.0, 10.0, 1/15.0 ]) #check
+<<<<<<< HEAD
+  mc.CLS_LOSS_WEIGHT    = np.array([0.4, 7.0,  5.0 ])
+=======
   mc.CLS_LOSS_WEIGHT    = np.array([2.0, 5.0,  10.0 ])
+>>>>>>> ea9639af4df6cca37f37a855a9e97eab7dca680f
 
   # mc.CLS_COLOR_MAP      = np.array([[ 0.00,  0.00,  0.00],
   #                                   [ 0.12,  0.56,  0.37],
@@ -61,8 +65,8 @@ def NH_airsim_squeezeSeg_config():
   mc.DATA_AUGMENTATION  = True
   mc.RANDOM_FLIPPING    = True
 
-  # x, y, z, intensity, distance
-  mc.INPUT_MEAN         =  np.array([[[7.904, -0.016, -1.028, 8.979]]])
-  mc.INPUT_STD          =  np.array( [[[5.93, 3.749, 0.37, 5.944]]] )
+  # x, y, z, r
+  mc.INPUT_MEAN         =  np.array( [[[ 2.607, 0.002, -0.354, 2.878]]])
+  mc.INPUT_STD          =  np.array( [[[ 5.032, 2.109, 0.525, 5.355]]] )
 
   return mc
