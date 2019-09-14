@@ -28,7 +28,7 @@ FLAGS = tf.app.flags.FLAGS
 
 tf.app.flags.DEFINE_string('dataset', 'KITTI',
                            """Currently support KITTI and NH_airsim dataset.""")
-tf.app.flags.DEFINE_string('data_path', '', """Root directory of data""")
+tf.app.flags.DEFINE_string('data_path', './data', """Root directory of data""")
 tf.app.flags.DEFINE_string('image_set', 'val',
                            """Can be train, trainval, val, or test""")
 tf.app.flags.DEFINE_string('image_set_dir', 'train',
@@ -45,6 +45,7 @@ tf.app.flags.DEFINE_string('net', 'squeezeSeg',
                            """Neural net architecture.""")
 tf.app.flags.DEFINE_string('gpu', '1', """gpu id.""")
 tf.app.flags.DEFINE_string('level', '5', """dataset level""")
+tf.app.flags.DEFINE_boolean('road', False, """Road included""")
 
 def eval_once(
         saver, ckpt_path, summary_writer, eval_summary_ops, eval_summary_phs, imdb,
@@ -183,7 +184,7 @@ def evaluate():
             mc.LOAD_PRETRAINED_MODEL = False
             mc.BATCH_SIZE = 1  # TODO(bichen): fix this hard-coded batch size.
             model = SqueezeSeg(mc)
-            imdb = NH_airsim(FLAGS.image_set_dir, FLAGS.image_set, FLAGS.data_path, mc, FLAGS.level)
+            imdb = NH_airsim(FLAGS.image_set_dir, FLAGS.image_set, FLAGS.data_path, mc, FLAGS.level, FLAGS.road)
         
 
         eval_summary_ops = []

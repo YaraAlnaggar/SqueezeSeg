@@ -9,15 +9,19 @@ import subprocess
 from .imdb import imdb
 
 class NH_airsim(imdb):
-	def __init__(self, image_set_dir, image_set, data_path, mc, level):
+	def __init__(self, image_set_dir, image_set, data_path, mc, level, road):
 		imdb.__init__(self, 'NH_airsim_'+image_set, mc)
 		self._image_set = image_set
 		self._image_set_dir = image_set_dir
 		self._data_root_path = data_path
+		self._road = road
 		if level == 5:
 			self._lidar_2d_path = os.path.join(self._data_root_path, 'lidar_1e6_2d_NH_Airsim')
 		else :
-			self._lidar_2d_path = os.path.join(self._data_root_path, 'lidar_1e6_2d_NH_Airsim_L' + str(level))
+			if road:
+				self._lidar_2d_path = os.path.join(self._data_root_path, 'lidar_1e6_2d_NH_Airsim_wr_L' + str(level))
+			else:
+				self._lidar_2d_path = os.path.join(self._data_root_path, 'lidar_1e6_2d_NH_Airsim_L' + str(level))
 
 		#self._gta_2d_path = os.path.join(self._data_root_path, 'gta')
 

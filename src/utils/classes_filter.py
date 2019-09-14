@@ -3,11 +3,27 @@ from os import listdir
 from os.path import isfile, join
 
 
-input_dir = "./data/lidar_1e6_2d_NH_Airsim/counter_cw"
-output_dir = "./data/lidar_1e6_2d_NH_Airsim_L0/counter_cw" 
+# 	NH = {
+#"ignore" : 0,
+#"building" : 1,
+#"sign" : 2,
+#"tree" : 3,
+#"car":  4,
+#"road" : 5  }
 
-classes_ignore = [1,2,5]  #  buidling, sign,road  ---> 1, 2, 5
-classes_consider = [3,4]
+
+input_dir = "./data/lidar_1e6_2d_NH_Airsim/cw"
+output_dir = "./data/lidar_1e6_2d_NH_Airsim_wr_L0/cw" 
+
+
+#L0 
+classes_ignore = [1,2]  #  buidling, sign,road  ---> 1, 2, 5
+classes_consider = [3,4,5]
+
+# #L1
+# classes_ignore = [2,3,5]  #  sign, tree,road 
+# classes_consider = [1,4]
+
 input_files = [ f for f in listdir(input_dir) if isfile(join(input_dir,f)) ] 
 
 def discard(x):
