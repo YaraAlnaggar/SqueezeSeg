@@ -41,8 +41,8 @@ tf.app.flags.DEFINE_boolean('run_once', False,
                             """Whether to run eval only once.""")
 tf.app.flags.DEFINE_string('net', 'squeezeSeg',
                            """Neural net architecture.""")
-tf.app.flags.DEFINE_string('gpu', '0', """gpu id.""")
-
+tf.app.flags.DEFINE_string('gpu', '1', """gpu id.""")
+tf.app.flags.DEFINE_string('level', '5', """dataset level""")
 
 def eval_once(
         saver, ckpt_path, summary_writer, eval_summary_ops, eval_summary_phs, imdb,

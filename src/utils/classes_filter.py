@@ -3,8 +3,8 @@ from os import listdir
 from os.path import isfile, join
 
 
-input_dir = "./data/lidar_1e6_2d_NH_Airsim/cw"
-output_dir = "./data/lidar_1e6_2d_NH_Airsim_L0/cw" 
+input_dir = "./data/lidar_1e6_2d_NH_Airsim/counter_cw"
+output_dir = "./data/lidar_1e6_2d_NH_Airsim_L0/counter_cw" 
 
 classes_ignore = [1,2,5]  #  buidling, sign,road  ---> 1, 2, 5
 classes_consider = [3,4]

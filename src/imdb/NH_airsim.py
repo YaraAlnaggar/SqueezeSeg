@@ -12,11 +12,12 @@ class NH_airsim(imdb):
 	def __init__(self, image_set_dir, image_set, data_path, mc, level):
 		imdb.__init__(self, 'NH_airsim_'+image_set, mc)
 		self._image_set = image_set
+		self._image_set_dir = image_set_dir
 		self._data_root_path = data_path
 		if level == 5:
-			self._lidar_2d_path = os.path.join(self._data_root_path, 'lidar_2d_NH_Airsim')
+			self._lidar_2d_path = os.path.join(self._data_root_path, 'lidar_1e6_2d_NH_Airsim')
 		else :
-			self._lidar_2d_path = os.path.join(self._data_root_path, 'lidar_2d_NH_Airsim_L' + str(level))
+			self._lidar_2d_path = os.path.join(self._data_root_path, 'lidar_1e6_2d_NH_Airsim_L' + str(level))
 
 		#self._gta_2d_path = os.path.join(self._data_root_path, 'gta')
 
@@ -33,7 +34,7 @@ class NH_airsim(imdb):
 
 	def _load_image_set_idx(self):
 		image_set_file = os.path.join(
-			self._data_root_path, 'ImageSet_NH_Airsim', self._image_set+'.txt')
+			self._data_root_path, self._image_set_dir, self._image_set+'.txt')
 		assert os.path.exists(image_set_file), \
 			'File does not exist: {}'.format(image_set_file)
 
