@@ -1,5 +1,6 @@
 import numpy as np
-
+from collections import Counter
+from PIL import Image
 
 def _normalize(x):
     return (x - x.min()) / (x.max() - x.min())
@@ -78,11 +79,6 @@ def pto_depth_map(velo_points, H=64, W=512, C=5, dtheta=np.radians(0.4), dphi=np
 
 def get_2d(points_3d, W = 512, H = 64, C = 5, visualize = False):
 
-	# INPUT_MEAN         = np.array([[[13.17, -0.03, -0.84, 12.12, 0]]])
-	INPUT_MEAN 	= np.array([[[7.904, -0.016, -1.028, 8.979,  0.]]])
-	# INPUT_STD          = np.array([[[13.79, 8.04, 2.4,  12.32, 1]]])
-	INPUT_STD = np.array( [[[5.93, 3.749, 0.37, 5.944, 1.]]] )
-
 	cond = hv_in_range(x=points_3d[:, 0],
 	                   y=points_3d[:, 1],
 	                   z=points_3d[:, 2],
@@ -92,7 +88,6 @@ def get_2d(points_3d, W = 512, H = 64, C = 5, visualize = False):
 	lidar = pto_depth_map(points_3d_ranged)
 
 	lidar_f = lidar.astype(np.float32)
-	lidar_f_norm = (lidar_f - INPUT_MEAN) / INPUT_STD
 
 	if visualize:
 		pick_color = {
@@ -107,27 +102,16 @@ def get_2d(points_3d, W = 512, H = 64, C = 5, visualize = False):
 		    8 : (163, 91, 163),     # light brown
 		    9 :  (0,0,255),        # red 
 		    }    
-		file_name = 'visual_nh_up5.png'
+		file_name = 'visual.png'
 		print("in pic", Counter(lidar[:, :, 4].flatten()))
 		colors = [ pick_color[int(num)] for num in lidar[:, :, 4].flatten() ]
 		img = Image.new('RGB',(512,64))
 		img.putdata(colors)
 		img.save(file_name)
 		print(file_name, " as label is saved")
-
-		norm_x = Image.fromarray((255 * _normalize(lidar_f_norm[:, :, 0])).astype(np.uint8))
-		no_norm_x = Image.fromarray((255 * lidar_f_norm[:, :, 0]).astype(np.uint8))
-		norm_y = Image.fromarray((255 * _normalize(lidar_f_norm[:, :, 1])).astype(np.uint8))
-		norm_z = Image.fromarray((255 * _normalize(lidar_f_norm[:, :, 2])).astype(np.uint8))
-		norm_x.save("norm_x.png")
-		norm_y.save("norm_y.png")
-		norm_z.save("norm_z.png")
-		no_norm_x.save("no_norm_x.png")
-
-		_= input("Press Enter to continue...")
 			
     # generated depth map from LiDAR data
 
-	return lidar_f_norm        
+	return lidar_f        
 
 

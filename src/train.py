@@ -30,6 +30,8 @@ tf.app.flags.DEFINE_string('dataset', 'KITTI',
 tf.app.flags.DEFINE_string('data_path', '', """Root directory of data""")
 tf.app.flags.DEFINE_string('image_set', 'train',
                            """ Can be train, trainval, val, or test""")
+tf.app.flags.DEFINE_string('image_set_dir', 'train',
+                           """ directory of imageset text files""")
 tf.app.flags.DEFINE_string('train_dir', '/tmp/bichen/logs/squeezeseg/train',
                            """Directory where to write event logs """
                            """and checkpoint.""")
@@ -72,7 +74,7 @@ def train():
             mc.PRETRAINED_MODEL_PATH = FLAGS.pretrained_model_path
             model = SqueezeSeg(mc)
             # *.npy image dataset in random order
-            imdb = NH_airsim(FLAGS.image_set, FLAGS.data_path, mc, FLAGS.level)
+            imdb = NH_airsim(FLAGS.image_set_dir, FLAGS.image_set, FLAGS.data_path, mc, FLAGS.level)
 
         
 

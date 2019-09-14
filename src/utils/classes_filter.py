@@ -3,8 +3,9 @@ from os import listdir
 from os.path import isfile, join
 
 
-input_dir = "./data/lidar_2d_NH_Airsim" 
-output_dir = "./data/lidar_2d_NH_Airsim_L0"
+input_dir = "./data/lidar_1e6_2d_NH_Airsim/cw"
+output_dir = "./data/lidar_1e6_2d_NH_Airsim_L0/cw" 
+
 classes_ignore = [1,2,5]  #  buidling, sign,road  ---> 1, 2, 5
 classes_consider = [3,4]
 input_files = [ f for f in listdir(input_dir) if isfile(join(input_dir,f)) ] 

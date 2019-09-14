@@ -35,14 +35,14 @@ tf.app.flags.DEFINE_string(
     'dataset', 'KITTI or NH_airsim',
     """dataset name.""")
 tf.app.flags.DEFINE_string(
-    'checkpoint', './data/SqueezeSeg/model.ckpt-23000',
+    'checkpoint', './Log_L0/model.ckpt-12000',
     """Path to the model parameter file.""")
 tf.app.flags.DEFINE_string(
-    'input_path', './data/NH_Sample/input',
+    'input_path', './data/NH_sample/input',
     """Input lidar scan to be detected. Can process glob input such as """
     """./data/samples/ or single input(not working).""")
 tf.app.flags.DEFINE_string(
-    'out_dir', './data/NH_Sample/result', """Directory to dump output.""")
+    'out_dir', './data/NH_sample/result', """Directory to dump output.""")
 tf.app.flags.DEFINE_string('gpu', '0', """gpu id.""")
 
 
@@ -73,8 +73,10 @@ def detect():
             saver.restore(sess, FLAGS.checkpoint)
             # traverse all training data
             files = [join(FLAGS.input_path,f) for f in listdir(FLAGS.input_path) if isfile(join(FLAGS.input_path,f)) ]
+
             for f in files:
                 lidar = np.load(f).astype(np.float32, copy=False)[:, :, :mc.INPUT_CHANNEL_SIZE]
+                lidar_gt = np.load(f).astype(np.float32, copy=False)[:, :, mc.INPUT_CHANNEL_SIZE:]
                 lidar_mask = np.reshape(
                     (lidar[:, :, 3] > 0), ##Hard coded for NH_airsim dataset
                     [mc.ZENITH_LEVEL, mc.AZIMUTH_LEVEL, 1]
@@ -120,13 +122,18 @@ def detect():
                     depth_map = Image.fromarray(
                         (255 * _normalize(lidar[:, :, 0])).astype(np.uint8))
                     # classified depth map with label
-                    label_map = Image.fromarray(
+                    pred_map = Image.fromarray(
                         (255 * visualize_seg(pred_cls, mc)[0]).astype(np.uint8))
+                    lidar_gt =  np.moveaxis(lidar_gt, [0, 1, 2], [1, 2, 0])
+                    gt_map = Image.fromarray(
+                        (255* visualize_seg(lidar_gt, mc)[0]).astype(np.uint8))
+
                     depth_map.save(
                         os.path.join(FLAGS.out_dir, 'input_' + file_name + '.png'))
-                    label_map.save(
+                    pred_map.save(
                         os.path.join(FLAGS.out_dir, 'pred_' + file_name + '.png'))
-
+                    gt_map.save(
+                        os.path.join(FLAGS.out_dir, 'gt_' + file_name + '.png'))
 
 def main(argv=None):
     if not tf.gfile.Exists(FLAGS.out_dir):

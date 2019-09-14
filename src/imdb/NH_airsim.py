@@ -9,7 +9,7 @@ import subprocess
 from .imdb import imdb
 
 class NH_airsim(imdb):
-	def __init__(self, image_set, data_path, mc, level):
+	def __init__(self, image_set_dir, image_set, data_path, mc, level):
 		imdb.__init__(self, 'NH_airsim_'+image_set, mc)
 		self._image_set = image_set
 		self._data_root_path = data_path

@@ -15,7 +15,7 @@ def visualize_seg(label_map, mc, one_hot=False):
     for l in range(1, mc.NUM_CLASS):
         out[label_map == l, :] = mc.CLS_COLOR_MAP[l]
 
-    # print(out.shape)
+    
     return out
 
 

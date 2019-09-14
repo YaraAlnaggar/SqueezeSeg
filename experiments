@@ -1,0 +1,29 @@
+1. _cw_1
+A.
+classes : car, tree
+dataset: 8e5, half
+losses: 0.4 #ignore, 5.0 # tree,  7.0 #car
+result:  
+  Accuracy:
+    tree:
+	Pixel-seg: P: 0.057, R: 0.633, IoU: 0.055
+    car:
+	Pixel-seg: P: 0.465, R: 0.417, IoU: 0.282
+
+step : 5000
+
+B. 
+classes : car, tree
+dataset: 8e5, half
+losses: 0.4 #ignore, 7.0 # tree,  5.0 #car
+result:  
+
+  Accuracy:
+    tree:
+	Pixel-seg: P: 0.055, R: 0.794, IoU: 0.054
+    car:
+	Pixel-seg: P: 0.687, R: 0.417, IoU: 0.351
+step : 19,000
+
+C. 
+
