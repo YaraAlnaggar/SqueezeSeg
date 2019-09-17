@@ -13,16 +13,16 @@ from os.path import isfile, join
 
 
 input_dir = "./data/lidar_1e6_2d_NH_Airsim/cw"
-output_dir = "./data/lidar_1e6_2d_NH_Airsim_wr_L0/cw" 
+output_dir = "./data/lidar_1e6_2d_NH_Airsim_wr_L1/cw" 
 
 
 #L0 
-classes_ignore = [1,2]  #  buidling, sign,road  ---> 1, 2, 5
-classes_consider = [3,4,5]
+# classes_ignore = [1,2]  #  buidling, sign,road  ---> 1, 2, 5
+# classes_consider = [3,4,5]
 
 # #L1
-# classes_ignore = [2,3,5]  #  sign, tree,road 
-# classes_consider = [1,4]
+classes_ignore = [2,3]  #  sign, tree,road 
+classes_consider = [1,4,5]
 
 input_files = [ f for f in listdir(input_dir) if isfile(join(input_dir,f)) ] 
 
@@ -31,8 +31,10 @@ def discard(x):
 		return 0
 	else:
 		return x
+
 def reorder(x):
-	if x in classes_consider:
+
+	if x in classes_consider[1:]:
 		return x-2
 	else:
 		return x

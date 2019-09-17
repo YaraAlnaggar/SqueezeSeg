@@ -58,7 +58,7 @@ def pto_depth_map(velo_points, H=64, W=512, C=5, dtheta=np.radians(0.4), dphi=np
         phi_[phi_<0] = 0
         phi_[phi_>=W] = W-1
 
-        theta = np.radians(1.0) - np.arcsin(z/d)
+        theta = np.radians(3.0) - np.arcsin(z/d)
         theta_ = (theta/dtheta).astype(int)
         theta_[theta_<0] = 0
         theta_ =  theta_

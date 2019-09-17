@@ -20,8 +20,9 @@ from imdb import kitti
 from utils.util import *
 from nets import *
 
-from config.NH_airsim_squeezeSeg_config import NH_airsim_squeezeSeg_config
-from imdb.NH_airsim import NH_airsim
+ffrom config import *
+
+from imdb import NH_airsim
 
 
 FLAGS = tf.app.flags.FLAGS
@@ -180,7 +181,12 @@ def evaluate():
             imdb = kitti(FLAGS.image_set, FLAGS.data_path, mc)
 
         elif FLAGS.dataset == 'NH_airsim':
-            mc = NH_airsim_squeezeSeg_config()
+            if FLAGS.level =="0":
+                mc = NH_airsim_L0_squeezeSeg_config()
+            elif FLAGS.level =="1":
+                mc = NH_airsim_L1_squeezeSeg_config()
+            else:
+                mc = NH_airsim_squeezeSeg_config()
             mc.LOAD_PRETRAINED_MODEL = False
             mc.BATCH_SIZE = 1  # TODO(bichen): fix this hard-coded batch size.
             model = SqueezeSeg(mc)

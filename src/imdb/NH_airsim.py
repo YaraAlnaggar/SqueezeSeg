@@ -15,15 +15,13 @@ class NH_airsim(imdb):
 		self._image_set_dir = image_set_dir
 		self._data_root_path = data_path
 		self._road = road
-		if level == 5:
-			self._lidar_2d_path = os.path.join(self._data_root_path, 'lidar_1e6_2d_NH_Airsim')
+		if level == "5":
+			self._lidar_2d_path = os.path.join(self._data_root_path, 'lidar_1e6_2d_NH_deg3_Airsim')
 		else :
-			if road:
+			if self._road:
 				self._lidar_2d_path = os.path.join(self._data_root_path, 'lidar_1e6_2d_NH_Airsim_wr_L' + str(level))
 			else:
 				self._lidar_2d_path = os.path.join(self._data_root_path, 'lidar_1e6_2d_NH_Airsim_L' + str(level))
-
-		#self._gta_2d_path = os.path.join(self._data_root_path, 'gta')
 
 		# a list of string indices of images in the directory
 		self._image_idx = self._load_image_set_idx() 
@@ -47,7 +45,7 @@ class NH_airsim(imdb):
 		return image_idx
 
 	def _lidar_2d_path_at(self,idx):
-		lidar_2d_path = os.path.join(self._lidar_2d_path, idx+'.npy')
+		lidar_2d_path = os.path.join(self._lidar_2d_path, idx)
 		assert os.path.exists(lidar_2d_path),'File does not exist: {}'.format(lidar_2d_path)
 		return lidar_2d_path
 

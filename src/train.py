@@ -17,9 +17,10 @@ from six.moves import xrange
 import tensorflow as tf
 import threading
 
-from config.NH_airsim_squeezeSeg_config import NH_airsim_squeezeSeg_config
+from config import * 
+
 from imdb import kitti
-from imdb.NH_airsim import NH_airsim
+from imdb import NH_airsim
 from utils.util import *
 from nets import *
 
@@ -27,7 +28,7 @@ FLAGS = tf.app.flags.FLAGS
 
 tf.app.flags.DEFINE_string('dataset', 'KITTI',
                            """Currently only support KITTI dataset and NH_airsim.""")
-tf.app.flags.DEFINE_string('data_path', '', """Root directory of data""")
+tf.app.flags.DEFINE_string('data_path', './data', """Root directory of data""")
 tf.app.flags.DEFINE_string('image_set', 'train',
                            """ Can be train, trainval, val, or test""")
 tf.app.flags.DEFINE_string('image_set_dir', 'train',
@@ -49,10 +50,9 @@ tf.app.flags.DEFINE_string('gpu', '0', """gpu id.""")
 tf.app.flags.DEFINE_string('level', '5', """level of dataset""")
 tf.app.flags.DEFINE_boolean('road', False, """Road included""")
 
+
 def train():
     """Train SqueezeSeg model"""
-    # assert FLAGS.dataset == 'KITTI', \
-    #     'Currently only support KITTI dataset'
 
     os.environ['CUDA_VISIBLE_DEVICES'] = FLAGS.gpu
 
@@ -69,7 +69,12 @@ def train():
             imdb = kitti(FLAGS.image_set, FLAGS.data_path, mc)
 
         elif  FLAGS.dataset == 'NH_airsim':
-            mc = NH_airsim_squeezeSeg_config()
+            if FLAGS.level == "0":
+                mc = NH_airsim_L0_squeezeSeg_config()
+            if FLAGS.level == "1":
+                mc = NH_airsim_L1_squeezeSeg_config()
+            else:
+                mc = NH_airsim_squeezeSeg_config()
             if FLAGS.pretrained_model_path=="":
                 mc.LOAD_PRETRAINED_MODEL= False
             mc.PRETRAINED_MODEL_PATH = FLAGS.pretrained_model_path
@@ -144,7 +149,6 @@ def train():
         try:
             for step in xrange(FLAGS.max_steps):
                 start_time = time.time()
-
                 if step % FLAGS.summary_step == 0 or step == FLAGS.max_steps - 1:
                     op_list = [
                         model.lidar_input, model.lidar_mask, model.label, model.train_op,
@@ -154,7 +158,6 @@ def train():
                     lidar_per_batch, lidar_mask_per_batch, label_per_batch, \
                     _, loss_value, pred_cls, summary_str = sess.run(op_list,
                                                                     options=run_options)
-
                     label_image = visualize_seg(label_per_batch[:6, :, :], mc)
                     pred_image = visualize_seg(pred_cls[:6, :, :], mc)
 
@@ -199,10 +202,12 @@ def train():
 
                 duration = time.time() - start_time
 
+                # assert not np.isnan(loss_value), \
+                #     'Model diverged. Total loss: {}, conf_loss: {}, bbox_loss: {}, ' \
+                #     'class_loss: {}'.format(loss_value, conf_loss, bbox_loss,
+                #                             class_loss)
                 assert not np.isnan(loss_value), \
-                    'Model diverged. Total loss: {}, conf_loss: {}, bbox_loss: {}, ' \
-                    'class_loss: {}'.format(loss_value, conf_loss, bbox_loss,
-                                            class_loss)
+                    'Model diverged. Total loss: {}'.format(loss_value)
 
                 if step % 10 == 0:
                     num_images_per_step = mc.BATCH_SIZE

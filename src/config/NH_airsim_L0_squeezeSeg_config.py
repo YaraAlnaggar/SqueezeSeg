@@ -6,29 +6,31 @@ import numpy as np
 
 from .config import base_model_config
 
-def NH_airsim_squeezeSeg_config():
+def NH_airsim_L0_squeezeSeg_config():
   """Specify the parameters to tune below."""
   mc                    = base_model_config('NH_airsim')
 
-  # mc.CLASSES            = ['ignore', 'building', 'sign', 'tree','car', 'road']
-  mc.CLASSES            = ['ignore', 'building', 'tree','car', 'road']
-  print("XXXXXXXxxxx training clases are ", mc.CLASSES)
+  mc.CLASSES            = ['ignore', 'tree','car']
+  #mc.CLASSES            = ['ignore','tree','car','road']
   mc.NUM_CLASS          = len(mc.CLASSES)
   mc.CLS_2_ID           = dict(zip(mc.CLASSES, range(len(mc.CLASSES))))
-
-  # mc.CLS_LOSS_WEIGHT    = np.array([1/15.0, 1.0, 5.0,  3.0, 2.0, 1.0 ])
-  mc.CLS_LOSS_WEIGHT    = np.array([1/15.0, 1.0, 3.0, 2.0, 1.0 ])
+  mc.CLS_LOSS_WEIGHT    = np.array([0.4, 3.0, 2.0,  1.0 ])
 
 
-  mc.CLS_COLOR_MAP      = np.array([[ 0.00,  0.00,  0.00],
-                                    [ 0.12,  0.56,  0.37],
-                                    [ 0.40,  0.72,  0.88],
-                                    [ 0.58,  0.30,  0.50],
-                                    [ 0.70,  0.10,  0.60],
-                                    [ 0.35,  0.20,  0.40]
-                                    ])
+  # mc.CLS_COLOR_MAP      = np.array([[ 0.00,  0.00,  0.00],
+  #                                   [ 0.12,  0.56,  0.37],
+  #                                   [ 0.66,  0.55,  0.71],
+  #                                   [ 0.40,  0.72,  0.88],
+  #                                   [ 0.58,  0.30,  0.50],
+  #                                   [ 0.70,  0.10,  0.60],
+  #                                   [ 0.35,  0.20,  0.40]
+  #                                   ])
   
-
+  mc.CLS_COLOR_MAP      = np.array([[ 0.00,  0.00,  0.00],
+                                    [ 0.0,  2.55,  0.0],
+                                    [ 2.55,  0.0,  0.0]
+				    #[0.76,0.76,0.77]
+                                    ])
 
 
   mc.INPUT_CHANNEL_SIZE = 4
@@ -39,13 +41,14 @@ def NH_airsim_squeezeSeg_config():
   mc.LCN_HEIGHT         = 3
   mc.LCN_WIDTH          = 5
   mc.RCRF_ITER          = 3
-  mc.BILATERAL_THETA_A  = np.array([.9, .9,  .6, .6, .9])
-
-  mc.BILATERAL_THETA_R  = np.array([.015, .015, .01, .01, .015])
-
+  # mc.BILATERAL_THETA_A  = np.array([.9, .9, .6, .6, .6, .9])
+  mc.BILATERAL_THETA_A  = np.array([.9, .6, .9]) #l0
+  #mc.BILATERAL_THETA_A  = np.array([.9, .6, .6, .9])
+  mc.BILATERAL_THETA_R  = np.array([.015, .01 , .015])
+  #mc.BILATERAL_THETA_R  = np.array([.015, .01, .01, .015]) #l0 
   mc.BI_FILTER_COEF     = 0.1
-  mc.ANG_THETA_A        = np.array([.9, .9, .6, .6, .9])
-
+  mc.ANG_THETA_A        = np.array([.9,  .6, .9])
+  #mc.ANG_THETA_A        = np.array([.9, .6, .6, .9])
   mc.ANG_FILTER_COEF    = 0.02
 # ???????
 

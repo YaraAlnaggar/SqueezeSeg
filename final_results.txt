@@ -1,0 +1,40 @@
+CW
+1. All 
+    read: 0.002s detect: 0.010s
+  Accuracy:
+    building:
+	Pixel-seg: P: 0.751, R: 0.365, IoU: 0.325
+    sign:
+	Pixel-seg: P: 0.205, R: 0.830, IoU: 0.197
+    tree:
+	Pixel-seg: P: 0.032, R: 0.815, IoU: 0.032
+    car:
+	Pixel-seg: P: 0.720, R: 0.988, IoU: 0.714
+    road:
+	Pixel-seg: P: 0.983, R: 1.000, IoU: 0.983
+
+2. L0
+With road
+    tree:
+	Pixel-seg: P: 0.035, R: 0.660, IoU: 0.034
+    car:
+	Pixel-seg: P: 0.862, R: 0.973, IoU: 0.842
+    road:
+	Pixel-seg: P: 0.986, R: 0.999, IoU: 0.984
+
+without road
+
+
+3. L1 
+with road
+  Accuracy:
+    building:
+	Pixel-seg: P: 0.633, R: 0.530, IoU: 0.406
+    car:
+	Pixel-seg: P: 0.857, R: 0.967, IoU: 0.833
+    road:
+	Pixel-seg: P: 0.993, R: 0.997, IoU: 0.990
+
+without road
+
+

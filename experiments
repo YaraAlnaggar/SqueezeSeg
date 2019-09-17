@@ -1,29 +1,64 @@
 1. _cw_1
 A.
 classes : car, tree
-dataset: 8e5, half
-losses: 0.4 #ignore, 5.0 # tree,  7.0 #car
-result:  
-  Accuracy:
-    tree:
-	Pixel-seg: P: 0.057, R: 0.633, IoU: 0.055
-    car:
-	Pixel-seg: P: 0.465, R: 0.417, IoU: 0.282
-
-step : 5000
-
-B. 
-classes : car, tree
-dataset: 8e5, half
+dataset: 1e6, half
 losses: 0.4 #ignore, 7.0 # tree,  5.0 #car
 result:  
+  Accuracy:
+    tree:
+	Pixel-seg: P: 0.032, R: 0.832, IoU: 0.032
+    car:
+	Pixel-seg: P: 0.842, R: 0.984, IoU: 0.831
+    step : 1e4
+
+B.
+classes : car, tree
+dataset: 1e6, half
+losses: 0.4 #ignore, 3.0 # tree,  2.0 #car
+result: 
+Evaluation summary:
+
 
   Accuracy:
     tree:
-	Pixel-seg: P: 0.055, R: 0.794, IoU: 0.054
+	Pixel-seg: P: 0.043, R: 0.774, IoU: 0.042
     car:
-	Pixel-seg: P: 0.687, R: 0.417, IoU: 0.351
-step : 19,000
+	Pixel-seg: P: 0.876, R: 0.973, IoU: 0.856
+  Accuracy:
+    tree:
+	Pixel-seg: P: 0.042, R: 0.795, IoU: 0.042
+    car:
+	Pixel-seg: P: 0.855, R: 0.981, IoU: 0.841
+
+  Accuracy:
+    tree:
+	Pixel-seg: P: 0.054, R: 0.804, IoU: 0.053
+    car:
+	Pixel-seg: P: 0.892, R: 0.973, IoU: 0.871
 
 C. 
+
+classes: road, car, tree
+dataset: 1e6, half
+lossses: 0.4 #ignore , 3.0 #tree,  2.0 #car, 1.0 #road 
+''code 
+  mc.CLS_LOSS_WEIGHT    = np.array([0.4, 3.0,  2.0,  1.0 ])
+  mc.CLS_COLOR_MAP      = np.array([[ 0.00,  0.00,  0.00],
+                                    [ 0.0,  2.55,  0.0],
+                                    [ 2.55,  0.0,  0.0],
+				    [0.76,0.76,0.77]
+                                    ])
+  mc.BILATERAL_THETA_A  = np.array([.9, .6, .6, .9])
+  mc.BILATERAL_THETA_R  = np.array([.015, .01, .01, .014])
+  mc.ANG_THETA_A        = np.array([.9, .6, .6, .9])
+
+result:
+
+
+2- L1
+
+classes: buidling, car, tree
+dataset: 1e6, half
+
+
 
